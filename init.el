@@ -61,6 +61,9 @@
 ;;; Search
 (use-package deadgrep :ensure t)
 
+;;; Tasks
+;(use-package taskrunner :ensure t)
+
 ;;; hydra
 (use-package hydra :ensure t)
 (defhydra hydra-shortcuts (:color pink :hint nil)
@@ -148,7 +151,7 @@ _!_: errors
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(deadgrep web-mode magit hydra company projectile counsel use-package)))
+   '(taskrunner deadgrep web-mode magit hydra company projectile counsel use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
