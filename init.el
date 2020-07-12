@@ -100,9 +100,29 @@ _!_: errors
   :hook (
          (js-mode . lsp))
   :commands lsp)
+(use-package lsp-java
+  :ensure t
+  :config
+
+  (setq lombok-jar-path
+	(expand-file-name
+         "~/.emacs.d/vendor/lombok.jar"
+	 )
+	)
+
+  (setq lsp-java-vmargs `(
+			  "-Xmx1G"
+			  ,(concat "-javaagent:" lombok-jar-path)
+			  ,(concat "-Xbootclasspath/a:" lombok-jar-path)
+			  )
+	)
+  
+  (add-hook 'java-mode-hook 'lsp))
 
 ;; optionally
-;(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode)
 ;; if you are helm user
 ;(use-package helm-lsp :commands helm-lsp-workspace-symbol)
 ;; if you are ivy user
