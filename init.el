@@ -13,6 +13,7 @@
 (eval-when-compile
   (require 'use-package))
 
+(setq inhibit-startup-screen t)
 ;(setq default-directory "/Users/carl/" )
 ;(setq mac-right-option-modifier 'none)
 ;(setq mac-option-modifier 'none)
@@ -70,10 +71,10 @@
 
 
  "
-^Files^          ^Search^            ^Apps^
-^^^^^^^^-----------------------------------------------
-_b_: buffers     _r_: replace        _d_: dired
-_f_: find file   _g_: grep project   _e_: eshell
+^Files^          ^Search^            ^Apps^        ^Code^
+^^^^^^^^----------------------------------------------------------
+_b_: buffers     _%_: replace        _o_: dired    _d_: definition
+_f_: find file   _/_: grep project   _e_: eshell   _r_: references
 _p_: prettier    ^ ^                 _m_: magit
 _!_: errors
 "
@@ -81,12 +82,14 @@ _!_: errors
   ("f" projectile-find-file :color blue)
   ("p" prettier-js :color blue)
   ("!" flycheck-list-errors :color blue)
-  ("r" query-replace-regexp :color blue)
+  ("%" query-replace-regexp :color blue)
 ;  ("g" counsel-rg :color blue)
-  ("g" deadgrep :color blue)
-  ("d" counsel-dired :color blue)
-  ("m" magit-status :color blue)
+  ("/" deadgrep :color blue)
+  ("o" counsel-dired :color blue)
   ("e" eshell :color blue)
+  ("m" magit-status :color blue)
+  ("d" lsp-find-definition :color blue)
+  ("r" lsp-find-references :color blue)
   ("q" quit-window :color blue)
 )
 (global-set-key (kbd "M-m") 'hydra-shortcuts/body)
@@ -103,48 +106,30 @@ _!_: errors
 (use-package lsp-java
   :ensure t
   :config
-
   (setq lombok-jar-path
 	(expand-file-name
          "~/.emacs.d/vendor/lombok.jar"
 	 )
 	)
-
   (setq lsp-java-vmargs `(
 			  "-Xmx1G"
 			  ,(concat "-javaagent:" lombok-jar-path)
 			  ,(concat "-Xbootclasspath/a:" lombok-jar-path)
 			  )
 	)
-  
   (add-hook 'java-mode-hook 'lsp))
 
 ;; optionally
 (use-package lsp-ui
   :ensure t
   :commands lsp-ui-mode)
-;; if you are helm user
-;(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-;; if you are ivy user
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-
-;; optionally if you want to use debugger
-;(use-package dap-mode)
-;; (use-package dap-LANGUAGE) to load the dap adapter for your language
-
-;; optional if you want which-key integration
-;(use-package which-key
-;    :config
-;    (which-key-mode))
-
 
 ;;; lang
 
 ;; JavaScript
 (defun my-js-mode-hook ()
-  (setq indent-tabs-mode nil tab-width 2 js-indent-level 2))
-(add-hook 'js-mode-hook 'my-js-mode-hook)
+  (setq indent-tabs-mode nil tab-width 2 js-indent-level 2)
+(add-hook 'js-mode-hook 'my-js-mode-hook))
 
 ;; Web templates
 (use-package web-mode
